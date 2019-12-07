@@ -1,0 +1,32 @@
+=============== Nov 30, 2019 (PST) ===============
+16:48:28.081869 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:48:28.088266 db@open opening
+16:48:28.090187 version@stat F·[] S·0B[] Sc·[]
+16:48:28.093828 db@janitor F·2 G·0
+16:48:28.093904 db@open done T·5.590419ms
+16:48:28.095045 db@close closing
+16:48:28.095206 db@close done T·155.589µs
+=============== Nov 30, 2019 (PST) ===============
+17:07:31.008404 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+17:07:31.008735 version@stat F·[] S·0B[] Sc·[]
+17:07:31.008811 db@open opening
+17:07:31.008927 journal@recovery F·1
+17:07:31.019276 journal@recovery recovering @1
+17:07:31.024705 memdb@flush created L0@2 N·12 S·833B "Hp~..i\x88\x1f,v5":"\xfddw..\xac\x1ac,v2"
+17:07:31.036935 version@stat F·[1] S·833B[833B] Sc·[0.25]
+17:07:31.047617 db@janitor F·3 G·0
+17:07:31.047686 db@open done T·38.845501ms
+17:07:31.048801 db@close closing
+17:07:31.048966 db@close done T·160.757µs
+=============== Dec 6, 2019 (PST) ===============
+09:50:01.405892 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+09:50:01.406405 version@stat F·[1] S·833B[833B] Sc·[0.25]
+09:50:01.406492 db@open opening
+09:50:01.406635 journal@recovery F·1
+09:50:01.417557 journal@recovery recovering @3
+09:50:01.423314 memdb@flush created L0@5 N·1 S·389B "eth..i\x88\x1f,v14":"eth..i\x88\x1f,v14"
+09:50:01.435583 version@stat F·[2] S·1KiB[1KiB] Sc·[0.50]
+09:50:01.446655 db@janitor F·4 G·0
+09:50:01.446721 db@open done T·40.197642ms
+09:50:01.447946 db@close closing
+09:50:01.448213 db@close done T·240.996µs
