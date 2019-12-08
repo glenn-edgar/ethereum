@@ -1,0 +1,1 @@
+geth --dev --datadir /mnt/ssd/ethereum/dev_data --ipcpath /home/pi/geth.ipc  -shh
