@@ -20,17 +20,17 @@ block = w3.eth.blockNumber
 
 print(w3.eth.blockNumber)
 print(w3.fromWei(w3.eth.getBalance(accounts[1]),"ether"))
-print(w3.fromWei(w3.eth.getBalance(accounts[0]),"ether"))
+print(w3.fromWei(w3.eth.getBalance(accounts[2]),"ether"))
 #print(w3.geth.personal.unlockAccount(accounts[0], "ready2go",10 ))
-keyfile_name = '/home/pi/ethereum_apps/eth_config/keystore/UTC--2019-12-01T00-16-30.239946032Z--951edf3eb9c41076e4a2d7530e09b11fd7dc57c8'
+keyfile_name = '/home/pi/ethereum_apps/test_dir/keystore/UTC--2019-12-08T20-29-05.205871190Z--75dca28623f88b105b8d0c718b4bfde0f1568688'
 with open(keyfile_name) as keyfile:
     encrypted_key = keyfile.read()
     private_key = w3.eth.account.decrypt(encrypted_key, 'ready2go')
     signed_txn = w3.eth.account.signTransaction(dict(
-    nonce=w3.eth.getTransactionCount(accounts[0]),
+    nonce=w3.eth.getTransactionCount(accounts[1]),
     gasPrice = w3.eth.gasPrice, 
     gas = 100000,
-    to=accounts[1],
+    to=accounts[2],
     value=w3.toWei(10,'ether')
   ),
   private_key)
@@ -45,6 +45,7 @@ except:
    raise
 print(x)
 print(y-time.time())
+print(w3.fromWei(w3.eth.getBalance(accounts[2]),"ether"))
 print(w3.fromWei(w3.eth.getBalance(accounts[1]),"ether"))
 print(w3.fromWei(w3.eth.getBalance(accounts[0]),"ether"))
 
