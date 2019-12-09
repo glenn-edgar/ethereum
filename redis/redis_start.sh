@@ -1,4 +1,4 @@
-
+cd /home/pi/ethereum_apps/redis
 while [ 1 ]
 do
    
