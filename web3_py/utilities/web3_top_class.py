@@ -1,16 +1,18 @@
 
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
+import msgpack
 
 
 class Web_Class_IPC(object):
 
-   def __init__(self,ipc_socket,signing_key):
+   def __init__(self,ipc_socket,redis_handle,signing_key = None):
        provider = Web3.IPCProvider(ipc_socket)
        self.w3 = Web3(provider)
        self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
        assert(self.w3.isConnected())
        self.signing_key = signing_key
+       self.redis_handle = redis_handle
        
        
    def send_currency(self, to_account_index, value):  # value in ether
@@ -30,9 +32,47 @@ class Web_Class_IPC(object):
 
    def get_block_number(self):
       return self.w3.eth.blockNumber
-      
+   
+   def get_block(self,block_number):
+       return self.w3.eth.getBlock(block_number)
+   
+   
    def get_balance(self, account_index):
        return self.w3.fromWei(self.w3.eth.getBalance(self.w3.eth.accounts[account_index]),"ether")
        
    def get_accounts(self):
       return self.w3.eth.accounts
+      
+   def get_contract(self,contract_name):
+       address = msgpack.unpackb(self.redis_handle.hget("contract_address",contract_name),raw=False)
+       abi_json = msgpack.unpackb(self.redis_handle.hget("contract_abi",contract_name),raw=False)
+
+       contract_object = self.w3.eth.contract(
+                                            address=address,
+                                            abi=abi_json
+                                          )
+      
+       return contract_object
+       
+   def read_contract_data(self,contract_object, method ,parameters=None):
+       if parameters == None:
+          return contract_object.__dict__["functions"][method]().call()
+           
+       
+       if type(parameters) != list:
+          parameters = [parameters]
+            
+       return contract_object.__dict__["functions"][method]().call(unpack(parameters))
+       
+   def transact_contract_data(self,contract_object, method ,parameters):
+ 
+           
+       
+       if type(parameters) != list:
+          parameters = [parameters]
+            
+       tx_hash = contract_object.__dict__["functions"][method](*parameters).transact({
+              'from': self.w3.eth.accounts[0],
+                  })
+       tx_receipt = self.w3.eth.waitForTransactionReceipt(tx_hash)  
+       return tx_receipt
