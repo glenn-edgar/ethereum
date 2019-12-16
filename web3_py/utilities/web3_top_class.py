@@ -7,6 +7,7 @@ import msgpack
 class Web_Class_IPC(object):
 
    def __init__(self,ipc_socket,redis_handle,signing_key = None):
+       print(ipc_socket)
        provider = Web3.IPCProvider(ipc_socket)
        self.w3 = Web3(provider)
        self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
@@ -36,7 +37,10 @@ class Web_Class_IPC(object):
    def get_block(self,block_number):
        return self.w3.eth.getBlock(block_number)
    
-   
+   def get_block_timestamp(self,block_number):
+       return self.w3.eth.getBlock(block_number).timestamp
+       
+       
    def get_balance(self, account_index):
        return self.w3.fromWei(self.w3.eth.getBalance(self.w3.eth.accounts[account_index]),"ether")
        
@@ -46,7 +50,7 @@ class Web_Class_IPC(object):
    def get_contract(self,contract_name):
        address = msgpack.unpackb(self.redis_handle.hget("contract_address",contract_name),raw=False)
        abi_json = msgpack.unpackb(self.redis_handle.hget("contract_abi",contract_name),raw=False)
-
+       
        contract_object = self.w3.eth.contract(
                                             address=address,
                                             abi=abi_json
@@ -76,3 +80,16 @@ class Web_Class_IPC(object):
                   })
        tx_receipt = self.w3.eth.waitForTransactionReceipt(tx_hash)  
        return tx_receipt
+       
+   def get_transaction_events(self,contract_name,receipt):
+       
+       contract_object = self.get_contract(contract_name)
+       rich_logs = contract_object.events.Update_Event().processReceipt(receipt)
+       return_value = []
+       for i in rich_logs:
+          temp = dict(i)
+          temp["args"] = dict(i["args"])
+          return_value.append(temp)
+       return return_value
+
+    
