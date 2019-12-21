@@ -1,5 +1,5 @@
 #from  utilities.web3_top_class import Web_Class_IPC
-from utilities.event_listner_top_class import Event_Listner_Class_IPC
+from utilities.event_listener_top_class import Event_Listner_Class_IPC
 import redis
 import time
 import datetime
@@ -19,16 +19,16 @@ ev = Event_Listner_Class_IPC(ipc_socket,redis_handle)
 
 
 print(ev.get_block_number())
-ev.construct_loop_filter("hellow_world")
-temp = ev.get_all_entries("hellow_world")
-print(temp)
-
+ev.construct_loop_filter("EventHandler")
+temp = ev.get_all_entries("EventHandler")
+for event in temp:
+   print(event["args"],event["blockNumber"])
 def event_handler(event):
-   print(event)
+   print(dict(event["args"]),event["blockNumber"])
    if event.blockNumber > 25:
-      return False
+      return True
    else:
       return True
 
-ev.lastest_event_loop("hellow_world",event_handler)
+ev.lastest_event_loop("EventHandler",event_handler)
 
